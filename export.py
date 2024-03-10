@@ -34,10 +34,10 @@ def export_onnx(model: str, output: str = None):
         output = f"weights/depth_anything_vit{model}14.onnx"
 
     # Device for tracing (use whichever has enough free memory)
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cpu")#"cuda" if torch.cuda.is_available() else "cpu")
 
     # Sample image for tracing (dimensions don't matter)
-    image, _ = load_image("assets/sacre_coeur1.jpg")
+    image, _ = load_image("assets/1024x320.png")
     image = torch.from_numpy(image).to(device)
 
     # Load model params
@@ -69,7 +69,7 @@ def export_onnx(model: str, output: str = None):
         output,
         input_names=["image"],
         output_names=["depth"],
-        opset_version=17,
+        opset_version=11,
         dynamic_axes={
             "image": {2: "height", 3: "width"},
             "depth": {2: "height", 3: "width"},
